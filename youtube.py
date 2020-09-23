@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 import random
 from discord.utils import get
+import os
 
 app = commands.Bot(command_prefix='~')
 
