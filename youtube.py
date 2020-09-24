@@ -27,7 +27,7 @@ async def _Team(ctx):
     for i in range(0, len(person)):
         await ctx.channel.send(person[i] + " ----> " + teamname[i])
         if i == len(person):
-            await ctx.channel.send(":point_right: 팀 정하기가 종료되었습니다! 자신의 팀을 확인해주세요! :point_left:
+            await ctx.channel.send(":point_right: 팀 정하기가 종료되었습니다! 자신의 팀을 확인해주세요! :point_left:")
 
 @app.command(name="청소", pass_context=True)
 async def _Clean(ctx, amount):
