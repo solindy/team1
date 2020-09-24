@@ -4,6 +4,7 @@ from discord.ext import commands
 import random
 from discord.utils import get
 import os
+import datetime
 
 app = commands.Bot(command_prefix='~')
 
@@ -66,6 +67,17 @@ async def _Role(ctx, role, member: discord.Member = None):
             await ctx.channel.send("뭘 잘못 쳤는진 모르겠지만 쨌든 제대로 입력좀")
     else:
         await ctx.channel.send("당신은 권한이 없기 때문에 이 명령어를 사용할 수 없습니다")
+        
+@app.command(name="정보", pass_context=True)
+async def _Jung(ctx):
+    date = datetime.datetime.utcfromtimestamp(((int(ctx.message.author.id) >> 22) + 1420070400000) / 1000)
+    embed = discord.Embed(color=0x00aaaa)
+    embed.add_field(name="이름", value=ctx.message.author.name, inline=True)
+    embed.add_field(name="서버닉네임", value=ctx.message.author.display_name, inline=True)
+    embed.add_field(name="가입일", value=str(date.year) + "년 " + str(date.month) + "월 " + str(date.day) + "일", inline=True)
+    embed.add_field(name="ID", value=ctx.message.author.id, inline=True)
+    embed.set_thumbnail(url=ctx.message.author.avatar_url)
+    await ctx.channel.send(embed=embed)
 
 @app.event
 async def on_command_error(ctx, error):
@@ -86,7 +98,7 @@ async def _Help(ctx):
     if cmd == "":
         embed = discord.Embed(title="Bedwars Team Shuffle Bot Help", description="베드워즈 내전 팀 나누기 봇 도움말", color=0x00aaaa)
         embed.add_field(name="관리자 전용", value=" `~청소` `~역할`", inline=False)
-        embed.add_field(name="기본", value=" `~숫자뽑기` `~팀` \n ", inline=False)
+        embed.add_field(name="기본", value=" `~숫자뽑기` `~팀` `~정보`\n ", inline=False)
         embed.add_field(name="명령어는 추후 추가될 수 있습니다", value="\n `~도움말 <명령어>` 명령어를 통해 명령어의 상세정보를 확인할 수 있습니다",
                         inline=False)
         await ctx.channel.send(embed=embed)
@@ -105,6 +117,10 @@ async def _Help(ctx):
     elif cmd == "팀":
         embed = discord.Embed(title="명령어 - 팀", description="팀을 랜덤으로 섞어서 뽑습니다", color=0x00aaaa)
         embed.add_field(name="사용법", value="`ex) ~팀 player1 player2 player3 player4 / redteam redteam greenteam greenteam `")
+        await ctx.channel.send(embed=embed)
+    elif cmd == "정보":
+        embed = discord.Embed(title="명령어 - 정보", description="자신의 디스코드 관련 정보를 출력합니다", color=0x00aaaa)
+        embed.add_field(name="사용법", value="`~정보`")
         await ctx.channel.send(embed=embed)
     else:
         await ctx.channel.send("상세정보를 확인할 명령어를 입력해주세요")
